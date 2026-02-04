@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cerca parrucchieri</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container" style="max-width:900px">
+    <div class="card">
+      <div class="section-title">Cerca parrucchieri freelance</div>
+<div class="brand">
+  <a href="index.html" style="text-decoration:none;color:inherit">
+    EasyCut
+  </a>
+</div>
+      <form class="list" action="api/search.php" method="GET">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <div class="small">Cantone</div>
+            <input name="canton" placeholder="es. ZG, ZH, TI">
+          </div>
+          <div>
+            <div class="small">Raggio (km)</div>
+            <select name="km">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <div class="small">La tua posizione (per calcolare i km)</div>
+          <input id="lat" name="lat" placeholder="lat" readonly>
+          <input id="lng" name="lng" placeholder="lng" readonly style="margin-top:8px">
+          <button class="btn secondary" type="button" id="geoBtn">Usa la mia posizione</button>
+        </div>
+
+        <button class="btn primary" type="submit">Cerca</button>
+      </form>
+
+      <div class="small" style="margin-top:10px">
+        Mostra SOLO parrucchieri con email verificata.
+      </div>
+    </div>
+  </div>
+
+<script>
+document.getElementById('geoBtn').addEventListener('click', () => {
+  if (!navigator.geolocation) return alert("Geolocalizzazione non supportata.");
+  navigator.geolocation.getCurrentPosition((pos) => {
+    document.getElementById('lat').value = pos.coords.latitude.toFixed(7);
+    document.getElementById('lng').value = pos.coords.longitude.toFixed(7);
+  }, () => alert("Permesso posizione negato."));
+});
+</script>
+</body>
+</html>

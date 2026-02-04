@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Accedi — EasyCut</title>
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    const p = new URLSearchParams(location.search);
+    if (p.get("verify") === "1") alert("Controlla la tua email e clicca il link per confermare l’account.");
+    if (p.get("verified") === "1") alert("Email confermata! Ora puoi accedere.");
+    if (p.get("needverify") === "1") alert("Devi confermare l’email prima di accedere.");
+    if (p.get("exists") === "1") alert("Questa email è già registrata.");
+    if (p.get("bad") === "1") alert("Credenziali non corrette.");
+  </script>
+</head>
+<body>
+  <div class="container" style="max-width:520px">
+    <div class="card">
+      <div class="section-title">Accedi</div>
+
+      <form action="api/login.php" method="POST" class="list">
+        <div>
+          <div class="small">Email</div>
+          <input name="email" type="email" required>
+        </div>
+        <div>
+          <div class="small">Password</div>
+          <input name="password" type="password" required>
+        </div>
+        <button class="btn primary" type="submit">Entra</button>
+      </form>
+
+      <div class="small" style="margin-top:10px">
+        Non hai un account? <a href="register.html"><b>Registrati</b></a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

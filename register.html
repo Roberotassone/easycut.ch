@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Registrati — EasyCut</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container" style="max-width:600px">
+  <div class="card">
+    <div class="section-title">Crea il tuo account</div>
+
+    <form class="list" action="api/register.php" method="POST">
+      <div>
+        <div class="small">Nome e cognome</div>
+        <input name="name" required>
+      </div>
+
+      <div>
+        <div class="small">Email</div>
+        <input type="email" name="email" required>
+      </div>
+
+      <div>
+        <div class="small">Telefono</div>
+        <input name="phone" required placeholder="+41 ...">
+      </div>
+
+      <div>
+        <div class="small">Città</div>
+        <input name="city" required placeholder="es. Arth">
+      </div>
+
+      <div>
+        <div class="small">Cantone</div>
+        <select name="canton" required>
+          <option value="">Seleziona cantone</option>
+          <option>AG</option><option>AI</option><option>AR</option><option>BE</option><option>BL</option><option>BS</option>
+          <option>FR</option><option>GE</option><option>GL</option><option>GR</option><option>JU</option><option>LU</option>
+          <option>NE</option><option>NW</option><option>OW</option><option>SG</option><option>SH</option><option>SO</option>
+          <option>SZ</option><option>TG</option><option>TI</option><option>UR</option><option>VD</option><option>VS</option>
+          <option>ZG</option><option>ZH</option>
+        </select>
+      </div>
+
+      <div>
+        <div class="small">Password</div>
+        <input type="password" name="password" required minlength="6">
+      </div>
+
+      <div>
+        <div class="small">Tipo di profilo</div>
+        <select name="role" id="role" required>
+          <option value="client">Cliente</option>
+          <option value="hairdresser">Parrucchiere freelance</option>
+        </select>
+      </div>
+
+      <!-- SOLO PARRUCCHIERE -->
+      <div id="hdFields" style="display:none">
+        <div>
+          <div class="small">Età (minimo 18)</div>
+          <input type="number" name="age" id="age" min="18">
+        </div>
+
+        <div>
+          <div class="small">Lingue parlate</div>
+          <input name="languages" id="languages" placeholder="Italiano, Inglese, Tedesco">
+        </div>
+
+        <div>
+          <div class="small">Breve descrizione</div>
+          <textarea name="bio" id="bio" rows="3" placeholder="Descriviti in poche righe..."></textarea>
+        </div>
+      </div>
+
+      <div>
+        <label class="small">
+          <input type="checkbox" name="accept" required>
+          Accetto i <a href="legal.html" target="_blank">Termini e Privacy</a>
+        </label>
+      </div>
+
+      <button class="btn primary" type="submit">Registrati</button>
+    </form>
+
+    <div class="small" style="margin-top:10px">
+      Hai già un account? <a href="login.html"><b>Accedi</b></a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const role = document.getElementById('role');
+  const box = document.getElementById('hdFields');
+  const hdReq = ['age','languages'];
+
+  function update(){
+    const isHd = role.value === 'hairdresser';
+    box.style.display = isHd ? 'block' : 'none';
+    hdReq.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.required = isHd;
+    });
+  }
+  role.addEventListener('change', update);
+  update();
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title> Easycut.ch — Cerca parrucchieri freelance</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true">
+          <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="var(--red)"/><stop offset="1" stop-color="var(--cyan)"/>
+          </linearGradient></defs>
+          <path d="M40 10c-3 0-6 3-6 6 0 3 3 6 6 6 3 0 6-3 6-6 0-3-3-6-6-6Z" fill="none" stroke="var(--red)" stroke-width="4"/>
+          <path d="M24 10c-3 0-6 3-6 6 0 3 3 6 6 6 3 0 6-3 6-6 0-3-3-6-6-6Z" fill="none" stroke="var(--cyan)" stroke-width="4"/>
+          <path d="M28 20 54 44" stroke="url(#g1)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M36 20 10 44" stroke="url(#g1)" stroke-width="5" stroke-linecap="round"/>
+          <path d="M30 28 34 28" stroke="rgba(26,20,32,.35)" stroke-width="4" stroke-linecap="round"/>
+        </svg>
+        Easycut.ch
+        <small>• Find your personal hairstylist •</small>
+      </div>
+
+      <div class="navlinks" id="navLinks">
+        <a class="btn ghost" href="how.html">Come funziona</a>
+        <a class="btn ghost" href="pricing.html">Prezzi</a>
+        <a class="btn ghost" href="legal.html">Legale</a>
+        <a class="btn secondary" href="register.html">Iscriviti</a>
+        <a class="btn primary" href="login.html">Accedi</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid-hero">
+      <div class="card soft">
+        <div class="tag">✨ Nuovi look, zero stress</div>
+        <h1 class="h1">Capelli in ordine.<br>In 2 minuti.</h1>
+        <p class="p">Cerca per città, scegli lo stile, prenota e paga in sicurezza.</p>
+
+        <!-- FIX: niente /api, usa api/... -->
+        <form class="form" action="api/search.php" method="GET">
+          <input name="city" placeholder="Città (es. Zug, Zürich, Luzern)">
+          <button class="btn primary" type="submit">Cerca</button>
+        </form>
+
+        <div class="kpis">
+          <div class="kpi"><b><span class="dot"></span> Taglio & Barber</b><div class="small">Da fade a classic.</div></div>
+          <div class="kpi"><b><span class="dot"></span> Colore & Schiariture</b><div class="small">Balayage, gloss.</div></div>
+          <div class="kpi"><b><span class="dot"></span> Piega & Eventi</b><div class="small">Wedding, party.</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="small" style="margin-bottom:10px"><b>Sei un parrucchiere?</b></div>
+        <p class="p">Crea il profilo, aggiungi servizi e disponibilità. Ricevi prenotazioni.</p>
+        <a class="btn primary" href="register.html?role=hairdresser">Crea profilo parrucchiere</a>
+        <div class="small" style="margin-top:10px">Hai già un account? <a href="login.html"><b>Accedi</b></a></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>© HairShake</div>
+      <div><a href="legal.html">Privacy & Termini</a></div>
+    </div>
+  </div>
+
+  <script>
+    // FIX: usa api/me.php e dashboard.php senza /public
+    fetch("api/me.php")
+      .then(r => r.ok ? r.json() : null)
+      .then(me => {
+        if (!me) return;
+        const nav = document.getElementById("navLinks");
+        nav.innerHTML = `
+          <a class="btn ghost" href="how.html">Come funziona</a>
+          <a class="btn ghost" href="pricing.html">Prezzi</a>
+          <a class="btn ghost" href="legal.html">Legale</a>
+          <a class="btn secondary" href="dashboard.php">Dashboard</a>
+          <a class="btn primary" href="api/logout.php">Esci</a>
+        `;
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>
