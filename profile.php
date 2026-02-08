@@ -1,6 +1,15 @@
 <?php
-require_once __DIR__ . '/api/bootstrap.php';
-require_once __DIR__ . '/api/db.php';
+$bootstrapPath = __DIR__ . '/bootstrap.php';
+if (!file_exists($bootstrapPath)) {
+  $bootstrapPath = __DIR__ . '/api/bootstrap.php';
+}
+require_once $bootstrapPath;
+
+$dbPath = __DIR__ . '/db.php';
+if (!file_exists($dbPath)) {
+  $dbPath = __DIR__ . '/api/db.php';
+}
+require_once $dbPath;
 
 if (empty($_SESSION['user_id'])) { header("Location: login.html"); exit; }
 
@@ -34,48 +43,48 @@ $role = $me['role'] ?? 'client';
   <div class="card">
     <div class="section-title">Il mio profilo</div>
 
-    <?php if (!empty($_GET['saved'])): ?>
+    <?php if (!empty($_GET['saved'])) { ?>
       <div class="card" style="margin:10px 0;background:#f0fff3">
         <b>✅ Salvato!</b>
       </div>
-    <?php endif; ?>
+    <?php } ?>
 
     <div style="display:flex;gap:14px;align-items:center;margin-bottom:14px">
-      <?php if (!empty($me['profile_image'])): ?>
-        <img src="<?= htmlspecialchars($me['profile_image']) ?>" style="width:90px;height:90px;border-radius:22px;object-fit:cover">
-      <?php else: ?>
+      <?php if (!empty($me['profile_image'])) { ?>
+        <img src="<?php echo htmlspecialchars($me['profile_image']); ?>" style="width:90px;height:90px;border-radius:22px;object-fit:cover">
+      <?php } else { ?>
         <div style="width:90px;height:90px;border-radius:22px;background:#eee"></div>
-      <?php endif; ?>
+      <?php } ?>
 
       <div style="flex:1">
-        <div style="font-size:20px"><b><?= htmlspecialchars($me['name'] ?? '') ?></b></div>
-        <div class="small"><?= htmlspecialchars($me['email'] ?? '') ?></div>
-        <div class="small">Ruolo: <b><?= htmlspecialchars($role) ?></b></div>
+        <div style="font-size:20px"><b><?php echo htmlspecialchars($me['name'] ?? ''); ?></b></div>
+        <div class="small"><?php echo htmlspecialchars($me['email'] ?? ''); ?></div>
+        <div class="small">Ruolo: <b><?php echo htmlspecialchars($role); ?></b></div>
       </div>
 
       <div>
         <a class="btn secondary" href="dashboard.php">Dashboard</a>
-        <a class="btn ghost" href="api/logout.php">Esci</a>
+        <a class="btn ghost" href="logout.php">Esci</a>
       </div>
     </div>
 
-    <form class="list" action="api/profile-save.php" method="POST" enctype="multipart/form-data">
+    <form class="list" action="profile-save.php" method="POST" enctype="multipart/form-data">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div>
           <div class="small">Nome</div>
-          <input name="name" value="<?= htmlspecialchars($me['name'] ?? '') ?>" required>
+          <input name="name" value="<?php echo htmlspecialchars($me['name'] ?? ''); ?>" required>
         </div>
 
         <div>
           <div class="small">Telefono</div>
-          <input name="phone" value="<?= htmlspecialchars($me['phone'] ?? '') ?>" required>
+          <input name="phone" value="<?php echo htmlspecialchars($me['phone'] ?? ''); ?>" required>
         </div>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
         <div>
           <div class="small">Città</div>
-          <input name="city" value="<?= htmlspecialchars($me['city'] ?? '') ?>" required>
+          <input name="city" value="<?php echo htmlspecialchars($me['city'] ?? ''); ?>" required>
         </div>
 
         <div>
@@ -98,7 +107,7 @@ $role = $me['role'] ?? 'client';
         <input type="file" name="profile_image" accept="image/*">
       </div>
 
-      <?php if ($role === 'hairdresser'): ?>
+      <?php if ($role === 'hairdresser') { ?>
         <div class="card" style="margin:12px 0">
           <b>Parrucchiere freelance</b>
           <div class="small">Questi dati servono per farti trovare in ricerca (cantone + km).</div>
@@ -107,18 +116,18 @@ $role = $me['role'] ?? 'client';
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <div>
             <div class="small">Età (min 18)</div>
-            <input type="number" min="18" name="age" value="<?= (int)($me['age'] ?? 18) ?>" required>
+            <input type="number" min="18" name="age" value="<?php echo (int)($me['age'] ?? 18); ?>" required>
           </div>
 
           <div>
             <div class="small">Lingue parlate</div>
-            <input name="languages" value="<?= htmlspecialchars($me['languages'] ?? '') ?>" required>
+            <input name="languages" value="<?php echo htmlspecialchars($me['languages'] ?? ''); ?>" required>
           </div>
         </div>
 
         <div>
           <div class="small">Descrizione</div>
-          <textarea name="bio" rows="3"><?= htmlspecialchars($me['bio'] ?? '') ?></textarea>
+          <textarea name="bio" rows="3"><?php echo htmlspecialchars($me['bio'] ?? ''); ?></textarea>
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
@@ -138,12 +147,12 @@ $role = $me['role'] ?? 'client';
 
           <div>
             <div class="small">Posizione (lat / lng)</div>
-            <input id="lat" name="lat" value="<?= htmlspecialchars($me['lat'] ?? '') ?>" placeholder="lat" required>
-            <input id="lng" name="lng" value="<?= htmlspecialchars($me['lng'] ?? '') ?>" placeholder="lng" required style="margin-top:8px">
+            <input id="lat" name="lat" value="<?php echo htmlspecialchars($me['lat'] ?? ''); ?>" placeholder="lat" required>
+            <input id="lng" name="lng" value="<?php echo htmlspecialchars($me['lng'] ?? ''); ?>" placeholder="lng" required style="margin-top:8px">
             <button class="btn secondary" type="button" id="geoBtn" style="margin-top:10px">Usa la mia posizione</button>
           </div>
         </div>
-      <?php else: ?>
+      <?php } else { ?>
         <!-- client -->
         <input type="hidden" name="age" value="0">
         <input type="hidden" name="languages" value="">
@@ -151,7 +160,7 @@ $role = $me['role'] ?? 'client';
         <input type="hidden" name="radius_km" value="10">
         <input type="hidden" name="lat" value="">
         <input type="hidden" name="lng" value="">
-      <?php endif; ?>
+      <?php } ?>
 
       <button class="btn primary" type="submit">Salva profilo</button>
     </form>
@@ -159,7 +168,7 @@ $role = $me['role'] ?? 'client';
   </div>
 </div>
 
-<?php if ($role === 'hairdresser'): ?>
+<?php if ($role === 'hairdresser') { ?>
 <script>
 document.getElementById('geoBtn').addEventListener('click', () => {
   if (!navigator.geolocation) return alert("Geolocalizzazione non supportata.");
@@ -169,7 +178,7 @@ document.getElementById('geoBtn').addEventListener('click', () => {
   }, () => alert("Permesso posizione negato."));
 });
 </script>
-<?php endif; ?>
+<?php } ?>
 
 </body>
 </html>

@@ -1,8 +1,17 @@
 <?php
-require_once __DIR__ . '/bootstrap.php';
-require_once __DIR__ . '/db.php';
+$bootstrapPath = __DIR__ . '/bootstrap.php';
+if (!file_exists($bootstrapPath)) {
+  $bootstrapPath = __DIR__ . '/api/bootstrap.php';
+}
+require_once $bootstrapPath;
 
-if (empty($_SESSION['user_id'])) { header("Location: ../login.html"); exit; }
+$dbPath = __DIR__ . '/db.php';
+if (!file_exists($dbPath)) {
+  $dbPath = __DIR__ . '/api/db.php';
+}
+require_once $dbPath;
+
+if (empty($_SESSION['user_id'])) { header("Location: login.html"); exit; }
 
 $m = db();
 $userId = (int)$_SESSION['user_id'];
@@ -60,7 +69,7 @@ if (!empty($_FILES['profile_image']['name']) && $_FILES['profile_image']['error'
   if (!isset($allowed[$mime])) die("Formato immagine non valido.");
 
   $ext = $allowed[$mime];
-  $dir = __DIR__ . '/../uploads';
+  $dir = __DIR__ . '/uploads';
   if (!is_dir($dir)) @mkdir($dir, 0755, true);
 
   $filename = 'u'.$userId.'_'.time().'.'.$ext;
@@ -120,5 +129,5 @@ if ($exists) {
   $stmt->execute();
 }
 
-header("Location: ../profile.php?saved=1");
+header("Location: profile.php?saved=1");
 exit;
